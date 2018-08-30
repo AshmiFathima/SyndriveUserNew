@@ -1,3 +1,7 @@
+# Depracation Warning!
+**This project is no longer under development as it has been ported to a new repository.** 
+Check out https://github.com/SyndriveInc/Syndrive-User for the latest version of my project.
+
 # Syndrive - Accident Detection and Assistance App
 
 These days, it is unlikely to find a person who gets out of their home without their cell phones in hand. Well, they rarely serve you the purpose of saving your lives. We have decided to unleash our potential to help the needy when they misfortunately meet with an accident. 
