@@ -1,5 +1,6 @@
 package universe.sk.syndriveapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -13,37 +14,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-public class EditContactsActivity extends AppCompatActivity {
+public class ContactsActivity extends AppCompatActivity {
 
     ListView lvContactList;
-    Button btnSaveContacts;
     ArrayList<Contact> contacts;
-    private static ContactAdapter adapter;
+    //private static ContactAdapter adapter;
+    private ContactAdapter adapter;
+    Button btnSave;
 
-    private FirebaseAuth firebaseAuth;
-    private FirebaseDatabase firebaseDatabase;
+    public static final String MY_PREFS_FILENAME = "universe.sk.syndriveapp.Contacts";
+    private static final String CONTACT_NAMES = "contactNames";
+    private static final String CONTACT_NUMBERS = "contactNumbers";
+
+    SharedPreferences prefs;
+//    int numContacts;
+    Set<String> contactNames = new LinkedHashSet<>();
+    Set<String> contactNumbers = new LinkedHashSet<>();
+
+//    private FirebaseAuth firebaseAuth;
+//    private FirebaseDatabase firebaseDatabase;
 
     private final int REQUEST_CONTACTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_contacts);
+        setContentView(R.layout.activity_contacts);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setIcon(R.drawable.contacts);
@@ -52,14 +55,22 @@ public class EditContactsActivity extends AppCompatActivity {
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        lvContactList = findViewById(R.id.lvContacts);
-        btnSaveContacts = findViewById(R.id.btnSaveContacts);
+        btnSave = findViewById(R.id.btnSave);
+        lvContactList = findViewById(R.id.lvContactList);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        prefs = getSharedPreferences(MY_PREFS_FILENAME, Context.MODE_PRIVATE);
+
+        // Add initial values (empty)
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(CONTACT_NAMES, contactNames);
+        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+        editor.commit();
+//        numContacts = prefs.getInt("numContacts", 0);
+
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        firebaseDatabase = FirebaseDatabase.getInstance();
 
         contacts = new ArrayList<>();
-        loadData();
 
 //        contacts.add(new Contact("Srividya", "+917736497532"));
 //        contacts.add(new Contact("Megha", "+918078906366"));
@@ -67,60 +78,45 @@ public class EditContactsActivity extends AppCompatActivity {
 
         adapter = new ContactAdapter(contacts, getApplicationContext());
         lvContactList.setAdapter(adapter);
+        loadData();
 
-        btnSaveContacts.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveData();
+//                saveData();
+                startActivity(new Intent(ContactsActivity.this, NavigationActivity.class));
             }
         });
 
     } // end of onCreate
 
     private void loadData() {
-        contacts.clear();
+        // read the contacts from sharedPreferences
+        contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
+        contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
 
-        File file = getApplicationContext().getFileStreamPath("Contacts.txt");
-        String lineFromFile;
+        String name, number;
+        Iterator<String> itrNames = contactNames.iterator();
+        Iterator<String> itrNumbers = contactNumbers.iterator();
 
-        if (file.exists()) {
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(openFileInput("Contacts.txt")));
-
-                while ( (lineFromFile=reader.readLine())!=null ) {
-                    StringTokenizer tokens = new StringTokenizer(lineFromFile, ": ");
-                    Contact contact = new Contact(tokens.nextToken(), tokens.nextToken());
-                    contacts.add(contact);
-                }
-
-                reader.close();
-            }
-            catch (IOException e) {
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+        while (itrNames.hasNext()) {
+            name = itrNames.next();
+            number = itrNumbers.next();
+            contacts.add(new Contact(name, number));
         }
-    }
-    private void saveData() {
-        try {
-            FileOutputStream file = openFileOutput("Contact.txt", MODE_PRIVATE);
-            OutputStreamWriter outputFile = new OutputStreamWriter(file);
+        adapter.notifyDataSetChanged();
+    } // end of loadData
 
-            for (int i=0; i<contacts.size(); i++) {
-                outputFile.write(contacts.get(i).getContactName() + ": " + contacts.get(i).getContactNumber() + "\n");
-            }
+    private void addData(String name, String number) {
+        prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>()).add(name);
+        prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>()).add(number);
+    } // end of addData
 
-            outputFile.flush();
-            outputFile.close();
-
-            Toast.makeText(this, "Successfully saved!", Toast.LENGTH_SHORT).show();
-        }
-        catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void removeContactData() {
-
-    }
+    private void removeContactData(String name, String number) {
+        prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>()).remove(name);
+        prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>()).remove(number);
+        loadData();
+    } // end of removeContactData
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,7 +135,7 @@ public class EditContactsActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
             intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
             startActivityForResult(intent, REQUEST_CONTACTS);
-            //Toast.makeText(this, "Add Contact", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Contact Added", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,6 +143,7 @@ public class EditContactsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == REQUEST_CONTACTS && resultCode == RESULT_OK) {
             Uri uri = data.getData();
             String names[] = {ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME};
@@ -162,10 +159,13 @@ public class EditContactsActivity extends AppCompatActivity {
             String number = cursor1.getString(column);
             cursor1.close();
 
-            contacts.add(new Contact(name, number));
-            adapter.notifyDataSetChanged();
+            addData(name, number);
+            loadData();
+
+//            contacts.add(new Contact(name, number));
+//            adapter.notifyDataSetChanged();
 
         }
     } // end of onActivityResult
 
-} // end of EditContactsActivity
+} // end of AddContactsActivity

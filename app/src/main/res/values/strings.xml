@@ -114,7 +114,7 @@
     <string name="call">Call</string>
     <string name="delete">Delete</string>
     <string name="existing_login">Already an existing member? Login</string>
-    <string name="hint_btn_save">Save Changes</string>
+    <string name="hint_btn_save">Save</string>
 
     <string name="donate_blood">Donate Blood</string>
 

@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -173,7 +172,7 @@ public class NavigationActivity extends AppCompatActivity
            startActivity(new Intent(this, EditProfileActivity.class));
         }
         else if (id == R.id.nav_contacts) {
-            startActivity(new Intent(this, EditContactsActivity.class));
+            startActivity(new Intent(this, ContactsActivity.class));
         }
         else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));

@@ -59,7 +59,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 adduser();
                                 finish();
                                 //startActivity(new Intent(RegistrationActivity.this, NavigationActivity.class));
-                                startActivity(new Intent(RegistrationActivity.this, AddContactsActivity.class));
+                                startActivity(new Intent(RegistrationActivity.this, ContactsActivity.class));
                                 Toast.makeText(RegistrationActivity.this, "Authentication Successful!", Toast.LENGTH_SHORT).show();
                             }
                             else

@@ -74,11 +74,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".NavigationActivity" />
         </activity>
-        <!-- <activity android:name=".AddContactsActivity"> -->
-        <!-- <meta-data -->
-        <!-- android:name="android.support.PARENT_ACTIVITY" -->
-        <!-- android:value=".RegistrationActivity" /> -->
-        <!-- </activity> -->
         <activity android:name=".AboutActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -91,7 +86,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".NavigationActivity" />
         </activity>
-        <activity android:name=".AddContactsActivity">
+        <activity android:name=".ContactsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RegistrationActivity" />
@@ -104,11 +99,6 @@
         <activity
             android:name=".TrackingActivity"
             android:label="Tracking" />
-        <activity android:name=".EditContactsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".NavigationActivity" />
-        </activity>
         <activity android:name=".AccountActivity" />
         <activity android:name=".BloodDonationActivity">
             <meta-data
