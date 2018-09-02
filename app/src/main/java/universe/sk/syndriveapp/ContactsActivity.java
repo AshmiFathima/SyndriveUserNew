@@ -84,8 +84,6 @@ public class ContactsActivity extends AppCompatActivity {
         Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
         Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
 
-        System.out.println("ContactNames: " + contactNames);
-
         String name, number;
         Iterator<String> itrNames = contactNames.iterator();
         Iterator<String> itrNumbers = contactNumbers.iterator();
