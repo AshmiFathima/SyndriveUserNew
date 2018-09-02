@@ -98,7 +98,6 @@ public class ContactsActivity extends AppCompatActivity {
     } // end of loadData
 
     private void addData(String name, String number) {
-
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
         Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
@@ -110,15 +109,17 @@ public class ContactsActivity extends AppCompatActivity {
 
     } // end of addData
 
-//    private void removeContactData(String name, String number) {
-//        SharedPreferences.Editor editor = prefs.edit();
-//        contactNames.remove(name);
-//        contactNumbers.remove(number);
-//        editor.putStringSet(CONTACT_NAMES, contactNames);
-//        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
-//        editor.commit();
-//
-//    } // end of removeContactData
+    private void removeContactData(String name, String number) {
+        SharedPreferences.Editor editor = prefs.edit();
+        Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
+        Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
+        contactNames.remove(name);
+        contactNumbers.remove(number);
+        editor.putStringSet(CONTACT_NAMES, contactNames);
+        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+        editor.commit();
+
+    } // end of removeContactData
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
