@@ -33,7 +33,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final String CONTACT_NUMBERS = "contactNumbers";
 
     SharedPreferences prefs;
-//    int numContacts;
+    //    int numContacts;
     Set<String> contactNames = new LinkedHashSet<>();
     Set<String> contactNumbers = new LinkedHashSet<>();
 
@@ -95,9 +95,13 @@ public class ContactsActivity extends AppCompatActivity {
         contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
         contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
 
+        System.out.println("ContactNames: " + contactNames);
+
         String name, number;
         Iterator<String> itrNames = contactNames.iterator();
         Iterator<String> itrNumbers = contactNumbers.iterator();
+
+        contacts.clear();
 
         while (itrNames.hasNext()) {
             name = itrNames.next();
@@ -108,14 +112,23 @@ public class ContactsActivity extends AppCompatActivity {
     } // end of loadData
 
     private void addData(String name, String number) {
-        prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>()).add(name);
-        prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>()).add(number);
+        SharedPreferences.Editor editor = prefs.edit();
+        contactNames.add(name);
+        contactNumbers.add(number);
+        editor.putStringSet(CONTACT_NAMES, contactNames);
+        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+        editor.commit();
+        loadData();
     } // end of addData
 
     private void removeContactData(String name, String number) {
-        prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>()).remove(name);
-        prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>()).remove(number);
-        loadData();
+        SharedPreferences.Editor editor = prefs.edit();
+        contactNames.remove(name);
+        contactNumbers.remove(number);
+        editor.putStringSet(CONTACT_NAMES, contactNames);
+        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+        editor.commit();
+
     } // end of removeContactData
 
     @Override
