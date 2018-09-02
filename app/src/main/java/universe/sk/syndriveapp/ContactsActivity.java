@@ -23,8 +23,7 @@ import java.util.Set;
 public class ContactsActivity extends AppCompatActivity {
 
     ListView lvContactList;
-    ArrayList<Contact> contacts;
-    //private static ContactAdapter adapter;
+    ArrayList<Contact> contacts = new ArrayList<>();
     private ContactAdapter adapter;
     Button btnSave;
 
@@ -32,13 +31,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final String CONTACT_NAMES = "contactNames";
     private static final String CONTACT_NUMBERS = "contactNumbers";
 
-    SharedPreferences prefs;
-    //    int numContacts;
-    Set<String> contactNames = new LinkedHashSet<>();
-    Set<String> contactNumbers = new LinkedHashSet<>();
-
-//    private FirebaseAuth firebaseAuth;
-//    private FirebaseDatabase firebaseDatabase;
+    SharedPreferences prefs ;
 
     private final int REQUEST_CONTACTS = 1;
 
@@ -58,32 +51,28 @@ public class ContactsActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
         lvContactList = findViewById(R.id.lvContactList);
 
+        Set<String> contactNames = new LinkedHashSet<>();
+        Set<String> contactNumbers = new LinkedHashSet<>();
+
         prefs = getSharedPreferences(MY_PREFS_FILENAME, Context.MODE_PRIVATE);
 
         // Add initial values (empty)
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putStringSet(CONTACT_NAMES, contactNames);
-        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
-        editor.commit();
-//        numContacts = prefs.getInt("numContacts", 0);
 
-//        firebaseAuth = FirebaseAuth.getInstance();
-//        firebaseDatabase = FirebaseDatabase.getInstance();
-
-        contacts = new ArrayList<>();
-
-//        contacts.add(new Contact("Srividya", "+917736497532"));
-//        contacts.add(new Contact("Megha", "+918078906366"));
-//        contacts.add(new Contact("Suvarna", "+919074976560"));
+        if(prefs.getStringSet(CONTACT_NAMES, null) == null){
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putStringSet(CONTACT_NAMES, contactNames);
+            editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+            editor.commit();
+        }
 
         adapter = new ContactAdapter(contacts, getApplicationContext());
         lvContactList.setAdapter(adapter);
+
         loadData();
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                saveData();
                 startActivity(new Intent(ContactsActivity.this, NavigationActivity.class));
             }
         });
@@ -92,8 +81,8 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void loadData() {
         // read the contacts from sharedPreferences
-        contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
-        contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
+        Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
+        Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
 
         System.out.println("ContactNames: " + contactNames);
 
@@ -112,24 +101,27 @@ public class ContactsActivity extends AppCompatActivity {
     } // end of loadData
 
     private void addData(String name, String number) {
+
         SharedPreferences.Editor editor = prefs.edit();
+        Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
+        Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
         contactNames.add(name);
         contactNumbers.add(number);
         editor.putStringSet(CONTACT_NAMES, contactNames);
         editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
         editor.commit();
-        loadData();
+
     } // end of addData
 
-    private void removeContactData(String name, String number) {
-        SharedPreferences.Editor editor = prefs.edit();
-        contactNames.remove(name);
-        contactNumbers.remove(number);
-        editor.putStringSet(CONTACT_NAMES, contactNames);
-        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
-        editor.commit();
-
-    } // end of removeContactData
+//    private void removeContactData(String name, String number) {
+//        SharedPreferences.Editor editor = prefs.edit();
+//        contactNames.remove(name);
+//        contactNumbers.remove(number);
+//        editor.putStringSet(CONTACT_NAMES, contactNames);
+//        editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
+//        editor.commit();
+//
+//    } // end of removeContactData
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -174,9 +166,6 @@ public class ContactsActivity extends AppCompatActivity {
 
             addData(name, number);
             loadData();
-
-//            contacts.add(new Contact(name, number));
-//            adapter.notifyDataSetChanged();
 
         }
     } // end of onActivityResult
