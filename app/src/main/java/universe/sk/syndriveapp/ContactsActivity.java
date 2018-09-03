@@ -30,7 +30,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final String CONTACT_NAMES = "contactNames";
     private static final String CONTACT_NUMBERS = "contactNumbers";
 
-    SharedPreferences prefs ;
+    SharedPreferences prefs;
 
     private final int REQUEST_CONTACTS = 1;
 
@@ -57,7 +57,7 @@ public class ContactsActivity extends AppCompatActivity {
 
         // Add initial values (empty)
 
-        if(prefs.getStringSet(CONTACT_NAMES, null) == null){
+        if (prefs.getStringSet(CONTACT_NAMES, null) == null) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putStringSet(CONTACT_NAMES, contactNames);
             editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
@@ -109,7 +109,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     } // end of addData
 
-    private void removeContactData(String name, String number) {
+    void removeContactData(String name, String number) {
         SharedPreferences.Editor editor = prefs.edit();
         Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
         Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
@@ -118,7 +118,7 @@ public class ContactsActivity extends AppCompatActivity {
         editor.putStringSet(CONTACT_NAMES, contactNames);
         editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
         editor.commit();
-
+        loadData();
     } // end of removeContactData
 
     @Override
