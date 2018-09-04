@@ -1,6 +1,6 @@
-# Depracation Warning!
+<!-- # Depracation Warning!
 **This project is no longer under development as it has been ported to a new repository.** 
-Check out https://github.com/SyndriveInc/Syndrive-User for the latest version of my project.
+Check out https://github.com/SyndriveInc/Syndrive-User for the latest version of my project. -->
 
 # Syndrive - Accident Detection and Assistance App
 

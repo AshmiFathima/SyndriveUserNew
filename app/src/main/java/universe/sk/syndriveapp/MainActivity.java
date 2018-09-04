@@ -107,6 +107,8 @@ public class MainActivity extends AppCompatActivity {
                         !=PackageManager.PERMISSION_GRANTED)||
                 (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.SEND_SMS)
                         != PackageManager.PERMISSION_GRANTED)||
+                (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CALL_PHONE)
+                        !=PackageManager.PERMISSION_GRANTED)||
                 (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 !=PackageManager.PERMISSION_GRANTED)||
                 (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(MainActivity.this,
                             new String[] { Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION,
                                     Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.SEND_SMS,
-                                    Manifest.permission.READ_CONTACTS },
+                                    Manifest.permission.READ_CONTACTS, Manifest.permission.CALL_PHONE },
                             REQUEST_PERMISSIONS);
         }
 
