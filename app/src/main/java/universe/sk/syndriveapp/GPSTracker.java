@@ -33,15 +33,16 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GPSTracker extends Service implements LocationListener{
+public class GPSTracker extends Service implements LocationListener {
 
-
-
+    private final int REQUEST_LOCATION_PERMISSIONS = 1501;
     private Context mContext;
 
     private List<String> hospitalAddresses;
 
-    public List<String> getHospitalAddress() { return hospitalAddresses; }
+    public List<String> getHospitalAddress() {
+        return hospitalAddresses;
+    }
 
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -89,8 +90,19 @@ public class GPSTracker extends Service implements LocationListener{
             } else {
                 this.canGetLocation = true;
                 // First get location from Network Provider
-                if (isNetworkEnabled ) {
+                if (isNetworkEnabled) {
 
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[] {
+                                Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION
+                        }, REQUEST_LOCATION_PERMISSIONS);
+                        //    ActivityCompat#requestPermissions
+                        // here to request the missing permissions, and then overriding
+                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                        //                                          int[] grantResults)
+                        // to handle the case where the user grants the permission. See the documentation
+                        // for ActivityCompat#requestPermissions for more details.
+                    }
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,
