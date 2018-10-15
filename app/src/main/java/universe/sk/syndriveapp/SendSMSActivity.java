@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,6 +63,9 @@ public class SendSMSActivity extends AppCompatActivity {
 //                etNum1 = userinfo.getCnum1();
 //                etNum2 = userinfo.getCnum2();
 //                etNum3 = userinfo.getCnum3();
+                etName1 = "Srividya";
+                etName2 = "Megha";
+                etName3 = "Ashmi";
                 etNum1 = "+917736497532";
                 etNum2 = "+918078906366";
                 etNum3 = "+919074976560";
@@ -81,9 +83,9 @@ public class SendSMSActivity extends AppCompatActivity {
     private void sendSMSMessage(){
         String message = constructMessage();
         SmsManager smsManager = SmsManager.getDefault();
-        //smsManager.sendTextMessage(etNum1, null, message, null, null);
+        smsManager.sendTextMessage(etNum1, null, message, null, null);
         smsManager.sendTextMessage(etNum2, null, message, null, null);
-        //smsManager.sendTextMessage(etNum3, null, message, null, null);
+        smsManager.sendTextMessage(etNum3, null, message, null, null);
     }
 
     private String constructMessage(){
