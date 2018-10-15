@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -86,15 +87,18 @@ public class SendSMSActivity extends AppCompatActivity {
         smsManager.sendTextMessage(etNum1, null, message, null, null);
         smsManager.sendTextMessage(etNum2, null, message, null, null);
         smsManager.sendTextMessage(etNum3, null, message, null, null);
+//        smsManager.sendTextMessage("+918594014280", null, message, null, null);
     }
 
     private String constructMessage(){
+        GPSTracker gpsTracker = new GPSTracker(this);
+        Log.e("LOCATION" ,"Latitude : "+ gpsTracker.getLatitude() + ", Longitude : "+ gpsTracker.getLongitude());
         //Location location = mGPSTracker.getLocation();
         //double latitude = mGPSTracker.getLatitude();
         //double longitude = mGPSTracker.getLongitude();
         String message = "Alert! It appears that " + etName + " may have been in an accident. " +
                 etName + " has chosen you as their emergency contact. " + etName
-                + "'s current location is: ";/*+location+
+                + "'s current location is: " + "Latitude : "+ gpsTracker.getLatitude() + ", Longitude : "+ gpsTracker.getLongitude();/*+location+
                 ". Nearby hospitals include ";
         //message+="https://www.google.co.id/maps/@"+location;
         for (String hospital : hospitals) {
