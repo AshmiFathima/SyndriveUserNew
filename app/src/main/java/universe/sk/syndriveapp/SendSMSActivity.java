@@ -84,10 +84,10 @@ public class SendSMSActivity extends AppCompatActivity {
     private void sendSMSMessage(){
         String message = constructMessage();
         SmsManager smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(etNum1, null, message, null, null);
+        smsManager.sendTextMessage("+918848041089", null, message, null, null);
         smsManager.sendTextMessage(etNum2, null, message, null, null);
         smsManager.sendTextMessage(etNum3, null, message, null, null);
-//        smsManager.sendTextMessage("+918594014280", null, message, null, null);
+        smsManager.sendTextMessage("+918594014280", null, message, null, null);
     }
 
     private String constructMessage(){
