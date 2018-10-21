@@ -38,6 +38,7 @@ import java.util.List;
 public class GPSTracker extends Service implements LocationListener {
 
 
+    private final int REQUEST_LOCATION_PERMISSIONS = 1501;
     private Context mContext;
 
     private List<String> hospitalAddresses;
@@ -114,6 +115,7 @@ public class GPSTracker extends Service implements LocationListener {
                 this.canGetLocation = true;
                 Log.d("Location","Network or GPS on!!"+"GPS:"+isGPSEnabled+" Network:"+isNetworkEnabled);
                 // First get location from Network Provider
+
                 if (isNetworkEnabled)
                 {
 
@@ -131,6 +133,7 @@ public class GPSTracker extends Service implements LocationListener {
 //                        return null;
 //                    }
                     Log.d("IsNetworkEnabled?","Not Returning null:)");
+
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_BW_UPDATES,

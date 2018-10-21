@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +15,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -25,6 +36,9 @@ public class ContactsActivity extends AppCompatActivity {
     ArrayList<Contact> contacts = new ArrayList<>();
     private ContactAdapter adapter;
     Button btnSave;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private StorageReference storageReference;
 
     public static final String MY_PREFS_FILENAME = "universe.sk.syndriveapp.Contacts";
     private static final String CONTACT_NAMES = "contactNames";
@@ -49,6 +63,26 @@ public class ContactsActivity extends AppCompatActivity {
 
         btnSave = findViewById(R.id.btnSave);
         lvContactList = findViewById(R.id.lvContactList);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("emergency_contacts").child(firebaseAuth.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Contact contact;
+                contact = dataSnapshot.getValue(Contact.class);
+
+                //retrieve data
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(ContactsActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         Set<String> contactNames = new LinkedHashSet<>();
         Set<String> contactNumbers = new LinkedHashSet<>();

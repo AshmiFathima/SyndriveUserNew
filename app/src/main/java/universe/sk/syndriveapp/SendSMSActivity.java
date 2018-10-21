@@ -86,6 +86,9 @@ public class SendSMSActivity extends AppCompatActivity {
 //                etNum1 = userinfo.getCnum1();
 //                etNum2 = userinfo.getCnum2();
 //                etNum3 = userinfo.getCnum3();
+                etName1 = "Srividya";
+                etName2 = "Megha";
+                etName3 = "Ashmi";
                 etNum1 = "+917736497532";
                 etNum2 = "+918078906366";
                 etNum3 = "+919074976560";
@@ -103,9 +106,13 @@ public class SendSMSActivity extends AppCompatActivity {
     private void sendSMSMessage() {
         String message = constructMessage();
         SmsManager smsManager = SmsManager.getDefault();
-        //smsManager.sendTextMessage(etNum1, null, message, null, null);
+        smsManager.sendTextMessage(etNum1, null, message, null, null);
         smsManager.sendTextMessage(etNum2, null, message, null, null);
-        //smsManager.sendTextMessage(etNum3, null, message, null, null);
+        smsManager.sendTextMessage(etNum3, null, message, null, null);
+//         smsManager.sendTextMessage("+918848041089", null, message, null, null);
+//         smsManager.sendTextMessage(etNum2, null, message, null, null);
+//         smsManager.sendTextMessage(etNum3, null, message, null, null);
+//         smsManager.sendTextMessage("+918594014280", null, message, null, null);
     }
 
     private String constructMessage() {
@@ -133,6 +140,7 @@ public class SendSMSActivity extends AppCompatActivity {
         Log.d("message",message);
         return message;
     }
+
 
     private static class LocationAddress {
         private static final String TAG = "LocationAddress";
@@ -201,4 +209,5 @@ public class SendSMSActivity extends AppCompatActivity {
             Log.d("message1",message);
         }
     }
+
 }
