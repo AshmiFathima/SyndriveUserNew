@@ -69,6 +69,8 @@ public class ContactAdapter extends ArrayAdapter<Contact> implements View.OnClic
                 editor.putStringSet(CONTACT_NAMES, contactNames);
                 editor.putStringSet(CONTACT_NUMBERS, contactNumbers);
                 editor.commit();
+
+                //TODO: Remove from firebase
                 Snackbar.make(v, "Deleted", Snackbar.LENGTH_SHORT)
                         .setAction("No action", null).show();
                 break;

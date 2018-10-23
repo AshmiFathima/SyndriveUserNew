@@ -2,6 +2,7 @@ package universe.sk.syndriveapp;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -31,15 +32,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class SendSMSActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private FirebaseStorage firebaseStorage;
-    private StorageReference storageReference;
     private GPSTracker mGPSTracker;
     private ContactUsFragment contactUsFragment;
     private String message;
@@ -48,6 +50,12 @@ public class SendSMSActivity extends AppCompatActivity {
     //private String location;
 
     String etName, etName1, etNum1, etName2, etNum2, etName3, etNum3;
+
+    public static final String MY_PREFS_FILENAME = "universe.sk.syndriveapp.Contacts";
+    private static final String CONTACT_NAMES = "contactNames";
+    private static final String CONTACT_NUMBERS = "contactNumbers";
+
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,9 +74,7 @@ public class SendSMSActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
 
-        storageReference = firebaseStorage.getReference();
         //hospitals = mGPSTracker.getHospitalAddress();
         //location = mGPSTracker.getCurrentAddress();
 
@@ -86,12 +92,12 @@ public class SendSMSActivity extends AppCompatActivity {
 //                etNum1 = userinfo.getCnum1();
 //                etNum2 = userinfo.getCnum2();
 //                etNum3 = userinfo.getCnum3();
-                etName1 = "Srividya";
-                etName2 = "Megha";
-                etName3 = "Ashmi";
-                etNum1 = "+917736497532";
-                etNum2 = "+918078906366";
-                etNum3 = "+919074976560";
+//                etName1 = "Srividya";
+//                etName2 = "Megha";
+//                etName3 = "Ashmi";
+//                etNum1 = "+917736497532";
+//                etNum2 = "+918078906366";
+//                etNum3 = "+919074976560";
                 sendSMSMessage();
             }
 
@@ -101,7 +107,29 @@ public class SendSMSActivity extends AppCompatActivity {
             }
         });
 
-    }
+        prefs = getSharedPreferences(MY_PREFS_FILENAME, Context.MODE_PRIVATE);
+
+        Set<String> contactNames = prefs.getStringSet(CONTACT_NAMES, new LinkedHashSet<String>());
+        Set<String> contactNumbers = prefs.getStringSet(CONTACT_NUMBERS, new LinkedHashSet<String>());
+
+//        String name, number;
+        Iterator<String> itrNames = contactNames.iterator();
+        Iterator<String> itrNumbers = contactNumbers.iterator();
+
+//        while (itrNames.hasNext()) {
+//            name = itrNames.next();
+//            number = itrNumbers.next();
+//        }
+
+        etName1 = itrNames.hasNext() ? itrNames.next() : null;
+        etName2 = itrNames.hasNext() ? itrNames.next() : null;
+        etName3 = itrNames.hasNext() ? itrNames.next() : null;
+
+        etNum1 = itrNumbers.hasNext() ? itrNumbers.next() : null;
+        etNum2 = itrNumbers.hasNext() ? itrNumbers.next() : null;
+        etNum3 = itrNumbers.hasNext() ? itrNumbers.next() : null;
+
+    } // end of onCreate
 
     private void sendSMSMessage() {
         String message = constructMessage();

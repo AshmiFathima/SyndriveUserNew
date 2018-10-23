@@ -38,7 +38,6 @@ public class ContactsActivity extends AppCompatActivity {
     Button btnSave;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-    private StorageReference storageReference;
 
     public static final String MY_PREFS_FILENAME = "universe.sk.syndriveapp.Contacts";
     private static final String CONTACT_NAMES = "contactNames";
@@ -74,8 +73,7 @@ public class ContactsActivity extends AppCompatActivity {
                 Contact contact;
                 contact = dataSnapshot.getValue(Contact.class);
 
-                //retrieve data
-
+                //TODO: retrieve data
             }
 
             @Override
